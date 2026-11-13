@@ -56,6 +56,10 @@
     area.value = initial || '';
     var count = el('span', { class: 'r-count', 'aria-hidden': 'true' }, area.value.length + ' / ' + max);
     area.addEventListener('input', function () { count.textContent = area.value.length + ' / ' + max; });
+    // 휴대폰 키보드가 올라와도 입력창이 아래 고정 바에 가리지 않게 가운데로 옮긴다.
+    area.addEventListener('focus', function () {
+      setTimeout(function () { area.scrollIntoView({ block: 'center', behavior: 'smooth' }); }, 300);
+    });
     return {
       node: el('div', { class: 'r-field' },
         el('label', { for: id }, label, el('span', { class: 'ee-badge r-optional' }, '선택')),
@@ -65,12 +69,19 @@
     };
   }
   // 조건을 다 채울 때까지 버튼을 막고, 왜 막혔는지 글로 보여 준다(색만으로 구분하지 않음).
+  // 버튼 영역은 패널 아래에 고정(r-sticky)되어, 내용이 긴 화면에서도 항상 보인다.
   function gate(label, check, onGo) {
     var why = el('p', { class: 'r-gate', 'aria-live': 'polite' });
     var go = button(label, { onClick: function () { if (!check()) onGo(); } });
-    function refresh() { var msg = check(); go.disabled = !!msg; why.textContent = msg || ''; why.hidden = !msg; }
+    function refresh() {
+      var msg = check();
+      go.disabled = !!msg;
+      go.classList.toggle('r-ready', !msg); // 조건을 다 채운 순간 버튼을 살짝 강조
+      why.textContent = msg || '';
+      why.hidden = !msg;
+    }
     refresh();
-    return { node: el('div', { class: 'r-actions' }, why, go), refresh: refresh };
+    return { node: el('div', { class: 'r-actions r-sticky' }, why, go), refresh: refresh };
   }
   function head(eyebrow, title) {
     return [el('p', { class: 'r-eyebrow' }, eyebrow), el('h2', { class: 'r-title' }, title)];
