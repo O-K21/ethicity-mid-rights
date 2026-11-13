@@ -92,6 +92,22 @@
 .game-rights .ee-notice, .game-rights .ee-success { margin-top: 12px; }
 .game-rights .r-peek { margin: 8px 0 12px; padding: 0 12px 8px; background: #f7f1dc; border: 2px solid #d8cfa8; border-radius: 4px; }
 
+/* 결정 버튼 바: 패널 아래 고정 — 내용이 길어도 버튼과 '남은 할 일' 안내가 항상 보인다 */
+.game-rights .r-sheet { scroll-padding-bottom: 120px; } /* 포커스된 요소가 바 밑에 숨지 않게 */
+.game-rights .r-actions.r-sticky {
+  position: sticky; bottom: 0; z-index: 1;
+  margin-top: 20px; padding: 12px 0;
+  background: var(--ee-cream);              /* .ee-panel 배경색과 다르면 그 값으로 바꾸기 */
+  border-top: 2px solid #d8cfa8;
+  box-shadow: 0 -10px 12px -8px rgba(41, 75, 64, .3);
+}
+.game-rights .r-sticky .r-gate { font-size: 14px; }
+.game-rights .r-sticky .ee-button.r-ready { animation: r-nudge .45s ease 2; }
+@keyframes r-nudge { 50% { transform: scale(1.05); } }
+@media (prefers-reduced-motion: reduce) {
+  .game-rights .r-sticky .ee-button.r-ready { animation: none; }
+}
+
 /* 자료 카드 */
 .game-rights .r-who { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
 .game-rights .r-who .ee-speaker { margin: 0; }
@@ -163,6 +179,7 @@
   .game-rights .r-mission { font-size: 15px; }
   .game-rights .r-title { font-size: 19px; }
   .game-rights .r-sheet { padding: 4px; }
+  .game-rights .r-sticky .ee-button { flex: 1 1 100%; min-height: 48px; } /* 엄지로 누르기 쉽게 */
 }
 /* 가로로 둔 휴대폰처럼 낮은 화면: 대화창과 버튼을 줄인다 */
 @media (max-height: 520px) {
@@ -177,6 +194,8 @@
   .game-rights .r-talk-text { min-height: 2.6em; }
   .game-rights .r-act { right: 6px; bottom: 6px; }
   .game-rights .r-act .ee-button span:last-child { font-size: 14px; }
+  .game-rights .r-actions.r-sticky { margin-top: 12px; padding: 6px 0; }
+  .game-rights .r-sticky .r-gate { font-size: 13px; }
 }
 .game-rights.r-reduce * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 
